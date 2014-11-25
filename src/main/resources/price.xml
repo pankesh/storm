@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ProductPrices>
+	<ProductPrice>
+		<ProductId>10</ProductId>
+		<Price>12.99</Price>
+	</ProductPrice>
+	<ProductPrice>
+		<ProductId>2</ProductId>
+		<Price>1.00</Price>
+	</ProductPrice>
+	<ProductPrice>
+		<ProductId>3</ProductId>
+		<Price>10.23</Price>
+	</ProductPrice>
+</ProductPrices>
