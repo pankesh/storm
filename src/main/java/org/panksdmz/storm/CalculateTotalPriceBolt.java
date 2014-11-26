@@ -24,6 +24,7 @@ public class CalculateTotalPriceBolt extends BaseRichBolt {
     @Override
     public void execute(Tuple input) {
         Double total = input.getDouble(0) + input.getDouble(1);
+        System.out.println("Total Price is " + total);
         collector.emit(input, new Values(total));
         collector.ack(input);
     }

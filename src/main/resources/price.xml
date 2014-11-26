@@ -2,14 +2,14 @@
 <ProductPrices>
 	<ProductPrice>
 		<ProductId>10</ProductId>
-		<Price>12.99</Price>
+		<Price>129</Price>
 	</ProductPrice>
 	<ProductPrice>
 		<ProductId>2</ProductId>
-		<Price>1.00</Price>
+		<Price>1</Price>
 	</ProductPrice>
 	<ProductPrice>
 		<ProductId>3</ProductId>
-		<Price>10.23</Price>
+		<Price>10</Price>
 	</ProductPrice>
 </ProductPrices>

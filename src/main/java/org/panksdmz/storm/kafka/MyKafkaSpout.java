@@ -35,7 +35,6 @@ public class MyKafkaSpout extends KafkaSpout {
 
     @Override
     public void nextTuple() {
-        System.out.println("In nextTuple()");
         super.nextTuple();
     }
 

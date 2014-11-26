@@ -30,9 +30,9 @@ public class PriceScheme implements Scheme {
 
             Timestamp timestamp = Timestamp.valueOf(parts[0]);
             String productId = parts[1];
-            String price = parts[2];
+            Integer price = Integer.parseInt(parts[2]);
 
-            values = new Values(timestamp, productId, price);
+            values = new Values(price, timestamp, productId);
 
         } catch (Exception e) {
             LOG.error(e);
@@ -43,7 +43,7 @@ public class PriceScheme implements Scheme {
 
     @Override
     public Fields getOutputFields() {
-        return new Fields(PRICE_TIMESTAMP, PRODUCT_ID, PRODUCT_PRICE);
+        return new Fields(PRODUCT_PRICE, PRICE_TIMESTAMP, PRODUCT_ID);
     }
 
 }

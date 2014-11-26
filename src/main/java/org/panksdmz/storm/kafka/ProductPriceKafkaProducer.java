@@ -50,17 +50,21 @@ public class ProductPriceKafkaProducer {
         String priceDataXml = "price.xml";
         String[] priceData = readPriceData(priceDataXml);
 
-        for (int i = 0; i < priceData.length; i++) {
+        int j = 0;
+        while (j < 500) {
+            for (int i = 0; i < priceData.length; i++) {
 
-            priceEvent = new Timestamp(new Date().getTime()) + "|" + priceData[i];
-            try {
-                KeyedMessage<String, String> data = new KeyedMessage<String, String>(TOPIC, priceEvent);
-                LOG.info("Sending Messge #: " + priceEvent);
-                producer.send(data);
-                Thread.sleep(1000);
-            } catch (Exception e) {
-                e.printStackTrace();
+                priceEvent = new Timestamp(new Date().getTime()) + "|" + priceData[i];
+                try {
+                    KeyedMessage<String, String> data = new KeyedMessage<String, String>(TOPIC, priceEvent);
+                    LOG.info("Sending Messge #: " + priceEvent);
+                    producer.send(data);
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+            j++;
         }
 
         producer.close();
