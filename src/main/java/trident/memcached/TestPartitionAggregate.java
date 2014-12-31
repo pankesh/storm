@@ -6,7 +6,6 @@ import storm.trident.operation.builtin.Sum;
 import storm.trident.testing.FixedBatchSpout;
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
-import backtype.storm.LocalDRPC;
 import backtype.storm.generated.StormTopology;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
@@ -14,7 +13,7 @@ import backtype.storm.utils.Utils;
 
 public class TestPartitionAggregate {
 
-    public static StormTopology buildTopology(LocalDRPC drpc) {
+    public static StormTopology buildTopology() {
         @SuppressWarnings("unchecked")
 //        @formatter:off
         // Partition size is 2. Hence aggregate will run on that partition to calculate the sum.
@@ -37,8 +36,7 @@ public class TestPartitionAggregate {
 
     public static void main(String[] args) {
 
-        LocalDRPC drpc = new LocalDRPC();
-        StormTopology topology = buildTopology(drpc);
+        StormTopology topology = buildTopology();
         Config conf = new Config();
         LocalCluster cluster = new LocalCluster();
         cluster.submitTopology("tester", conf, topology);
