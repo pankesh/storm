@@ -1,4 +1,4 @@
-package trident.memcached;
+package org.panksdmz.storm.trident;
 
 import storm.trident.operation.CombinerAggregator;
 import storm.trident.tuple.TridentTuple;

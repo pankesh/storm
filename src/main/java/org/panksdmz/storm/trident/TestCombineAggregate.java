@@ -1,19 +1,36 @@
-package trident.memcached;
+package org.panksdmz.storm.trident;
 
 import storm.trident.TridentTopology;
+import storm.trident.operation.BaseFilter;
+import storm.trident.operation.CombinerAggregator;
 import storm.trident.operation.builtin.Debug;
-import storm.trident.operation.builtin.Sum;
 import storm.trident.testing.FixedBatchSpout;
+import storm.trident.tuple.TridentTuple;
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
+import backtype.storm.LocalDRPC;
 import backtype.storm.generated.StormTopology;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
 
-public class TestPartitionAggregate {
+/**
+ * This test class shows how to use a custom {@link CombinerAggregator} - {@link CompleteTupleSum}
+ */
+public class TestCombineAggregate {
 
-    public static StormTopology buildTopology() {
+    // partitionAggregate runs a function on each partition of a batch of tuples. Unlike functions, the tuples emitted
+    // by partitionAggregate replace the input tuples given to it.
+    public static class MyFilter extends BaseFilter {
+        private static final long serialVersionUID = 8154313714714442736L;
+
+        @Override
+        public boolean isKeep(TridentTuple tuple) {
+            return tuple.getInteger(0) == 1 && tuple.getInteger(1) == 2;
+        }
+    }
+
+    public static StormTopology buildTopology(LocalDRPC drpc) {
         @SuppressWarnings("unchecked")
 //        @formatter:off
         // Partition size is 2. Hence aggregate will run on that partition to calculate the sum.
@@ -28,7 +45,8 @@ public class TestPartitionAggregate {
 //        @formatter:on
         TridentTopology topology = new TridentTopology();
 
-        topology.newStream("spout1", spout).partitionAggregate(new Fields("b", "c"), new Sum(), new Fields("total"))
+        topology.newStream("spout1", spout)
+                .partitionAggregate(new Fields("b", "c"), new CompleteTupleSum(), new Fields("total"))
                 .each(new Fields("total"), new Debug());
 
         return topology.build();
@@ -36,11 +54,12 @@ public class TestPartitionAggregate {
 
     public static void main(String[] args) {
 
-        StormTopology topology = buildTopology();
+        LocalDRPC drpc = new LocalDRPC();
+        StormTopology topology = buildTopology(drpc);
         Config conf = new Config();
         LocalCluster cluster = new LocalCluster();
         cluster.submitTopology("tester", conf, topology);
-        Utils.sleep(2000);
+        Utils.sleep(4000);
         cluster.shutdown();
         System.exit(0);
     }

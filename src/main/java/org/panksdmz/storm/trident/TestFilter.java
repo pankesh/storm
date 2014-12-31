@@ -1,4 +1,4 @@
-package trident.memcached;
+package org.panksdmz.storm.trident;
 
 import storm.trident.TridentTopology;
 import storm.trident.operation.BaseFunction;

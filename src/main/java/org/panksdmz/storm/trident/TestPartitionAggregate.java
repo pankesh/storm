@@ -1,8 +1,8 @@
-package trident.memcached;
+package org.panksdmz.storm.trident;
 
 import storm.trident.TridentTopology;
-import storm.trident.operation.builtin.Count;
 import storm.trident.operation.builtin.Debug;
+import storm.trident.operation.builtin.Sum;
 import storm.trident.testing.FixedBatchSpout;
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
@@ -11,12 +11,7 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
 
-/**
- * This test class shows and example of how to combine 2 different aggregate functions and return them as values on a
- * tuple
- * 
- */
-public class TestMultipleAggregators {
+public class TestPartitionAggregate {
 
     public static StormTopology buildTopology() {
         @SuppressWarnings("unchecked")
@@ -29,18 +24,12 @@ public class TestMultipleAggregators {
                 new Values("z", 6, 2),
                 new Values("y", 3, 1),
                 new Values("z", 3, 4));
-        spout.setCycle(false);
+//        spout.setCycle(false);
 //        @formatter:on
         TridentTopology topology = new TridentTopology();
 
-        // @formatter:off
-        topology.newStream("spout1", spout)
-                .chainedAgg()
-                .partitionAggregate(new Fields("b", "c"), new CompleteTupleSum(), new Fields("total"))
-                .partitionAggregate(new Fields("b", "c"), new Count(), new Fields("count"))
-                .chainEnd()
-                .each(new Fields("total", "count"), new Debug());
-        // @formatter:on
+        topology.newStream("spout1", spout).partitionAggregate(new Fields("b", "c"), new Sum(), new Fields("total"))
+                .each(new Fields("total"), new Debug());
 
         return topology.build();
     }

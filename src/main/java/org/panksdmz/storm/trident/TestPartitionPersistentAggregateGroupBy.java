@@ -1,4 +1,4 @@
-package trident.memcached;
+package org.panksdmz.storm.trident;
 
 import java.net.InetSocketAddress;
 import java.util.Arrays;
@@ -10,6 +10,8 @@ import storm.trident.operation.builtin.FilterNull;
 import storm.trident.operation.builtin.MapGet;
 import storm.trident.state.StateFactory;
 import storm.trident.testing.FixedBatchSpout;
+import trident.memcached.MemcachedState;
+import trident.memcached.Test;
 import trident.memcached.Test.Split;
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
